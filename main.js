@@ -23,7 +23,7 @@ function roundManagement(){
     updateStatus("AI Turn");
     blockPlayerInput();
 
-    const $newSquare = ObtainRandomSquare();
+    const $newSquare = obtainRandomSquare();
     machineSequence.push($newSquare);
 
     const PLAYER_TURN_DELAY = (machineSequence.length + 1) * 1000;
@@ -45,8 +45,21 @@ function roundManagement(){
     updateRound(round);
 }
 
-function updateStatus(status){
+function obtainRandomSquare(){
+    $squares = document.querySelectorAll(".square");
+    index = Math.floor(Math.random() * $squares.length )
+    return $squares[index];
+}
+
+function updateStatus(status, error = false){
    document.querySelector("#status").textContent = status;
+    if(error){
+        document.querySelector("#status").classList.remove("alert-primary");
+        document.querySelector("#status").classList.add("alert-danger");
+    } else {
+        document.querySelector("#status").classList.remove("alert-danger");
+        document.querySelector("#status").classList.add("alert-primary");
+    }
 }
 
 function updateRound(round){
@@ -55,37 +68,44 @@ document.querySelector("#round").textContent = round;
 
 function blockPlayerInput(){
     document.querySelectorAll(".square").forEach(function($square) {
-     $square.onclick = function() {
-     }
+        $square.onclick = function() {
+        }
     });
 }
 
 function unlockPlayerInput(){
     document.querySelectorAll(".square").forEach(function($square) {
-    $square.onclick = playerInputManagement();
+        $square.onclick = playerInputManagement;
     });
 }
 
-function ObtainRandomSquare(){
-
-}
-
-function highligh($square) {
+function highlight($square) {
     $square.style.opacity = 1;
-    setTimeout(function name() {
-        
-    }) {
-        
-    }, 500);
-    
-}
+    setTimeout(function() {
+        $square.style.opacity = 0.5; 
+    }, 500); 
+};
 
 function playerInputManagement(e){
     const $square = e.target;
-    highligh($square);
+    highlight($square);
     playerSequence.push($square);
 
-    const $machineSquare = 
+    const $machineSquare = machineSequence[playerSequence.length - 1]
 
+    if($square.id !== $machineSquare.id){
+        lost();
+        return;
+    }
 
+    if(playerSequence.length === machineSequence.length){
+        blockPlayerInput();
+        setTimeout(roundManagement, 1000)
+    }
+}
+
+function lost() {
+    blockPlayerInput();
+    updateStatus('You lose. Press "Start" to play again', true)
+    resetStatus();
 }
