@@ -1,5 +1,5 @@
 # simon-says
 
 Installation
-Run
-'npm install'
+
+Run 'npm install'
