@@ -1,3 +1,0 @@
-Installation
-Run
-'npm install'
